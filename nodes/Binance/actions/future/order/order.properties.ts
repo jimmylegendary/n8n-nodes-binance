@@ -60,10 +60,10 @@ export const properties: IBinanceFutureProperties = [
 		options: [
 			{ name: 'Limit', value: 'LIMIT' },
 			{ name: 'Market', value: 'MARKET' },
-			{ name: 'Stop Market', value: 'STOP_MARKET', description: 'Market order triggered at stop price (for stop loss)' },
 			{ name: 'Stop Limit', value: 'STOP', description: 'Limit order triggered at stop price' },
-			{ name: 'Take Profit Market', value: 'TAKE_PROFIT_MARKET', description: 'Market order triggered at stop price (for take profit)' },
+			{ name: 'Stop Market', value: 'STOP_MARKET', description: 'Market order triggered at stop price (for stop loss)' },
 			{ name: 'Take Profit Limit', value: 'TAKE_PROFIT', description: 'Limit order triggered at stop price' },
+			{ name: 'Take Profit Market', value: 'TAKE_PROFIT_MARKET', description: 'Market order triggered at stop price (for take profit)' },
 		],
 		default: 'LIMIT',
 		description: 'LIMIT requires price, MARKET executes at current market price. Stop/Take Profit orders trigger at stop price.',
