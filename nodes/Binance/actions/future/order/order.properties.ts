@@ -42,7 +42,7 @@ export const properties: IBinanceFutureProperties = [
 			show: { resource: ['future'], operation: ['order'], side: ['BUY', 'SELL'] },
 		},
 		options: [
-			{ name: 'Both (One-way Mode)', value: 'BOTH', description: 'Default for One-way Mode' },
+			{ name: 'Both (One-Way Mode)', value: 'BOTH', description: 'Default for One-Way Mode' },
 			{ name: 'Long (Hedge Mode)', value: 'LONG', description: 'For long positions in Hedge Mode' },
 			{ name: 'Short (Hedge Mode)', value: 'SHORT', description: 'For short positions in Hedge Mode' },
 		],
