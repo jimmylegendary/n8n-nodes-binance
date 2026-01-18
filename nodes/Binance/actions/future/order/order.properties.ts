@@ -34,6 +34,38 @@ export const properties: IBinanceFutureProperties = [
 		default: '',
 	},
 	{
+		displayName: 'Order Type',
+		name: 'orderType',
+		type: 'options',
+		required: true,
+		displayOptions: {
+			show: { resource: ['future'], operation: ['order'], side: ['BUY', 'SELL'] },
+		},
+		options: [
+			{ name: 'Limit', value: 'LIMIT' },
+			{ name: 'Market', value: 'MARKET' },
+		],
+		default: 'LIMIT',
+		description: 'LIMIT requires price, MARKET executes at current market price',
+	},
+	{
+		displayName: 'Time In Force',
+		name: 'timeInForce',
+		type: 'options',
+		required: true,
+		displayOptions: {
+			show: { resource: ['future'], operation: ['order'], side: ['BUY', 'SELL'], orderType: ['LIMIT'] },
+		},
+		options: [
+			{ name: 'GTC (Good Till Cancel)', value: 'GTC', description: 'Order remains until cancelled' },
+			{ name: 'IOC (Immediate or Cancel)', value: 'IOC', description: 'Fill immediately or cancel unfilled portion' },
+			{ name: 'FOK (Fill or Kill)', value: 'FOK', description: 'Fill entire order immediately or cancel completely' },
+			{ name: 'GTX (Post Only)', value: 'GTX', description: 'Maker only, rejected if would take liquidity' },
+		],
+		default: 'GTC',
+		description: 'How long the order remains active',
+	},
+	{
 		displayName: 'Quantity',
 		name: 'quantity',
 		type: 'number',
@@ -50,10 +82,11 @@ export const properties: IBinanceFutureProperties = [
 		type: 'number',
 		required: true,
 		displayOptions: {
-			show: { resource: ['future'], operation: ['order'] },
+			show: { resource: ['future'], operation: ['order'], orderType: ['LIMIT'] },
 			hide: { side: ['CLEAR', 'GET'] },
 		},
 		default: 0,
+		description: 'Limit price for the order',
 	},
 	{
 		displayName: 'Reduce Only',
@@ -64,5 +97,6 @@ export const properties: IBinanceFutureProperties = [
 			hide: { side: ['CLEAR', 'GET'] },
 		},
 		default: false,
+		description: 'Whether the order can only reduce position size',
 	},
 ];
