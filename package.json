@@ -1,5 +1,5 @@
 {
-	"name": "n8n-nodes-binance",
+	"name": "@n8njimmy/n8n-nodes-binance",
 	"version": "0.0.7",
 	"description": "N8N nodes for Binance Exchange",
 	"keywords": [
