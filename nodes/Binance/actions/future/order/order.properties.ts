@@ -60,9 +60,58 @@ export const properties: IBinanceFutureProperties = [
 		options: [
 			{ name: 'Limit', value: 'LIMIT' },
 			{ name: 'Market', value: 'MARKET' },
+			{ name: 'Stop Market', value: 'STOP_MARKET', description: 'Market order triggered at stop price (for stop loss)' },
+			{ name: 'Stop Limit', value: 'STOP', description: 'Limit order triggered at stop price' },
+			{ name: 'Take Profit Market', value: 'TAKE_PROFIT_MARKET', description: 'Market order triggered at stop price (for take profit)' },
+			{ name: 'Take Profit Limit', value: 'TAKE_PROFIT', description: 'Limit order triggered at stop price' },
 		],
 		default: 'LIMIT',
-		description: 'LIMIT requires price, MARKET executes at current market price',
+		description: 'LIMIT requires price, MARKET executes at current market price. Stop/Take Profit orders trigger at stop price.',
+	},
+	{
+		displayName: 'Stop Price',
+		name: 'stopPrice',
+		type: 'number',
+		required: true,
+		displayOptions: {
+			show: { resource: ['future'], operation: ['order'], side: ['BUY', 'SELL'], orderType: ['STOP_MARKET', 'STOP', 'TAKE_PROFIT_MARKET', 'TAKE_PROFIT'] },
+		},
+		default: 0,
+		description: 'Trigger price for stop/take profit orders',
+	},
+	{
+		displayName: 'Working Type',
+		name: 'workingType',
+		type: 'options',
+		displayOptions: {
+			show: { resource: ['future'], operation: ['order'], side: ['BUY', 'SELL'], orderType: ['STOP_MARKET', 'STOP', 'TAKE_PROFIT_MARKET', 'TAKE_PROFIT'] },
+		},
+		options: [
+			{ name: 'Mark Price (Recommended)', value: 'MARK_PRICE', description: 'Use mark price as trigger reference' },
+			{ name: 'Contract Price', value: 'CONTRACT_PRICE', description: 'Use last contract price as trigger reference' },
+		],
+		default: 'MARK_PRICE',
+		description: 'Price type used for trigger comparison',
+	},
+	{
+		displayName: 'Price Protection',
+		name: 'priceProtect',
+		type: 'boolean',
+		displayOptions: {
+			show: { resource: ['future'], operation: ['order'], side: ['BUY', 'SELL'], orderType: ['STOP_MARKET', 'STOP', 'TAKE_PROFIT_MARKET', 'TAKE_PROFIT'] },
+		},
+		default: false,
+		description: 'Whether to enable price protection to prevent liquidation from price spikes',
+	},
+	{
+		displayName: 'Close Position',
+		name: 'closePosition',
+		type: 'boolean',
+		displayOptions: {
+			show: { resource: ['future'], operation: ['order'], side: ['BUY', 'SELL'], orderType: ['STOP_MARKET', 'TAKE_PROFIT_MARKET'] },
+		},
+		default: false,
+		description: 'Whether to close entire position when triggered (quantity not needed)',
 	},
 	{
 		displayName: 'Time In Force',
@@ -70,7 +119,7 @@ export const properties: IBinanceFutureProperties = [
 		type: 'options',
 		required: true,
 		displayOptions: {
-			show: { resource: ['future'], operation: ['order'], side: ['BUY', 'SELL'], orderType: ['LIMIT'] },
+			show: { resource: ['future'], operation: ['order'], side: ['BUY', 'SELL'], orderType: ['LIMIT', 'STOP', 'TAKE_PROFIT'] },
 		},
 		options: [
 			{ name: 'GTC (Good Till Cancel)', value: 'GTC', description: 'Order remains until cancelled' },
@@ -88,7 +137,7 @@ export const properties: IBinanceFutureProperties = [
 		required: true,
 		displayOptions: {
 			show: { resource: ['future'], operation: ['order'] },
-			hide: { side: ['CLEAR', 'GET'] },
+			hide: { side: ['CLEAR', 'GET'], closePosition: [true] },
 		},
 		default: 0,
 	},
@@ -98,7 +147,7 @@ export const properties: IBinanceFutureProperties = [
 		type: 'number',
 		required: true,
 		displayOptions: {
-			show: { resource: ['future'], operation: ['order'], orderType: ['LIMIT'] },
+			show: { resource: ['future'], operation: ['order'], orderType: ['LIMIT', 'STOP', 'TAKE_PROFIT'] },
 			hide: { side: ['CLEAR', 'GET'] },
 		},
 		default: 0,
