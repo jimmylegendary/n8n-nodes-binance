@@ -1,6 +1,6 @@
 import { IExecuteFunctions } from 'n8n-core';
 import { INodeExecutionData } from 'n8n-workflow';
-import createBinance, { OrderSide_LT, OrderType_LT, TimeInForce_LT } from 'binance-api-node';
+import createBinance, { OrderSide_LT, OrderType_LT, PositionSide_LT, TimeInForce_LT } from 'binance-api-node';
 
 export async function execute(
 	this: IExecuteFunctions,
@@ -26,7 +26,11 @@ export async function execute(
 
 	const quantity = this.getNodeParameter('quantity', index) as string;
 	const orderType = this.getNodeParameter('orderType', index) as OrderType_LT;
+	const positionSide = this.getNodeParameter('positionSide', index) as PositionSide_LT;
 	const reduceOnly = this.getNodeParameter('reduceOnly', index) as boolean;
+
+	// reduceOnly cannot be sent in Hedge Mode (when positionSide is LONG or SHORT)
+	const isHedgeMode = positionSide === 'LONG' || positionSide === 'SHORT';
 
 	if (orderType === 'MARKET') {
 		const order = await binanceClient.futuresOrder({
@@ -34,7 +38,8 @@ export async function execute(
 			quantity,
 			side: side as OrderSide_LT,
 			type: 'MARKET',
-			reduceOnly: `${reduceOnly}`,
+			positionSide,
+			...(isHedgeMode ? {} : { reduceOnly: `${reduceOnly}` }),
 		});
 
 		return this.helpers.returnJsonArray(order as any);
@@ -50,8 +55,9 @@ export async function execute(
 		price,
 		side: side as OrderSide_LT,
 		type: 'LIMIT',
+		positionSide,
 		timeInForce,
-		reduceOnly: `${reduceOnly}`,
+		...(isHedgeMode ? {} : { reduceOnly: `${reduceOnly}` }),
 	});
 
 	return this.helpers.returnJsonArray(order as any);

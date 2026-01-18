@@ -34,6 +34,22 @@ export const properties: IBinanceFutureProperties = [
 		default: '',
 	},
 	{
+		displayName: 'Position Side',
+		name: 'positionSide',
+		type: 'options',
+		required: true,
+		displayOptions: {
+			show: { resource: ['future'], operation: ['order'], side: ['BUY', 'SELL'] },
+		},
+		options: [
+			{ name: 'Both (One-way Mode)', value: 'BOTH', description: 'Default for One-way Mode' },
+			{ name: 'Long (Hedge Mode)', value: 'LONG', description: 'For long positions in Hedge Mode' },
+			{ name: 'Short (Hedge Mode)', value: 'SHORT', description: 'For short positions in Hedge Mode' },
+		],
+		default: 'BOTH',
+		description: 'Position side - use LONG/SHORT if Hedge Mode is enabled on your Binance account',
+	},
+	{
 		displayName: 'Order Type',
 		name: 'orderType',
 		type: 'options',
