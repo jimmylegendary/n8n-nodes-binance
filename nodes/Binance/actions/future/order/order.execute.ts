@@ -1,6 +1,9 @@
 import { IExecuteFunctions } from 'n8n-core';
 import { INodeExecutionData } from 'n8n-workflow';
-import createBinance, { OrderSide_LT, OrderType_LT, PositionSide_LT, TimeInForce_LT, WorkingType_LT } from 'binance-api-node';
+import createBinance, { OrderSide_LT, PositionSide_LT, TimeInForce_LT, WorkingType_LT } from 'binance-api-node';
+
+// Futures-specific order types (subset of OrderType_LT valid for futures)
+type FuturesOrderType_LT = 'LIMIT' | 'MARKET' | 'STOP' | 'TAKE_PROFIT' | 'STOP_MARKET' | 'TAKE_PROFIT_MARKET' | 'TRAILING_STOP_MARKET';
 
 export async function execute(
 	this: IExecuteFunctions,
@@ -25,7 +28,7 @@ export async function execute(
 	}
 
 	const quantity = this.getNodeParameter('quantity', index) as string;
-	const orderType = this.getNodeParameter('orderType', index) as OrderType_LT;
+	const orderType = this.getNodeParameter('orderType', index) as FuturesOrderType_LT;
 	const positionSide = this.getNodeParameter('positionSide', index) as PositionSide_LT;
 	const reduceOnly = this.getNodeParameter('reduceOnly', index) as boolean;
 
@@ -61,7 +64,7 @@ export async function execute(
 			const order = await binanceClient.futuresOrder({
 				symbol,
 				side: side as OrderSide_LT,
-				type: orderType as OrderType_LT,
+				type: orderType,
 				positionSide,
 				stopPrice,
 				workingType,
@@ -81,7 +84,7 @@ export async function execute(
 			quantity,
 			price,
 			side: side as OrderSide_LT,
-			type: orderType as OrderType_LT,
+			type: orderType,
 			positionSide,
 			stopPrice,
 			workingType,
