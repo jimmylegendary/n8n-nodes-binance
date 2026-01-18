@@ -1,6 +1,6 @@
 {
 	"name": "@n8njimmy/n8n-nodes-binance",
-	"version": "0.0.7",
+	"version": "0.0.1",
 	"description": "N8N nodes for Binance Exchange",
 	"keywords": [
 		"n8n-community-node-package"
@@ -8,14 +8,17 @@
 	"license": "MIT",
 	"homepage": "",
 	"author": {
-		"name": "Duc Pham",
-		"email": "ducpmm@gmail.com"
+		"name": "Seungho Lee",
+		"email": "jimmylee871124@gmail.com"
 	},
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/germanynick/n8n-nodes-binance.git"
+		"url": "https://github.com/jimmylegendary/n8n-nodes-binance.git"
 	},
 	"main": "index.js",
+	"publishConfig": {
+		"access": "public"
+	},
 	"scripts": {
 		"prebuild": "rimraf dist",
 		"build": "tsc && gulp build:icons",
